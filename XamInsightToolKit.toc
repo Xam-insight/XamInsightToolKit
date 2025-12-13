@@ -1,0 +1,5 @@
+## Interface: 110207,120000
+## Title: XamInsightToolKit
+## Version: 1.0.0
+## Notes: Library
+## Author: Xam-insight
