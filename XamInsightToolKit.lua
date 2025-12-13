@@ -71,7 +71,7 @@ function XITK.fullName(unit)
 end
 
 function XITK.isPlayerCharacter(aName)
-	return MountMania_playerCharacter() == XITK.addRealm(aName)
+	return XITK.playerCharacter() == XITK.addRealm(aName)
 end
 
 local playerCharacter
