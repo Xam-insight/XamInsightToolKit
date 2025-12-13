@@ -115,6 +115,19 @@ function XITK.PlaySound(soundID, channel)
 	end
 end
 
+function XITK.PlaySoundFile(addon, soundFile, channel)
+	if addon and soundFile then
+		if soundHandle then
+			StopSound(soundHandle)
+		end
+		willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..addon.."\\sound\\"..soundFile.."_"..GetLocale()..".ogg", channel, _, true)
+		if not willPlay then
+			willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..addon.."\\sound\\"..soundFile..".ogg", channel, _, true)
+		end
+	end
+	return soundHandle
+end
+
 function XITK.PlaySoundFileID(soundFileID, channel, playSound)
 	if playSound then
 		if soundHandle then
