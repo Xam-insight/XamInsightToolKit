@@ -5,6 +5,17 @@ if not XITK then
     return
 end
 
+function XITK.GetMouseFocus()
+	local frame = nil
+	if GetMouseFoci then
+		local region = GetMouseFoci()
+		frame = region[1]
+	else
+		frame = GetMouseFocus()
+	end
+	return frame
+end
+
 -- Tip by Gello - Hyjal
 -- takes an npcID and returns the name of the npc
 function XITK.GetNameFromNpcID(npcID)
