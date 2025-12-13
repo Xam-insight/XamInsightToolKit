@@ -109,9 +109,9 @@ end
 -- Sound handling
 local willPlay, soundHandle
 
-function XITK.PlaySound(soundID)
+function XITK.PlaySound(soundID, channel)
 	if soundID then
-		PlaySound(soundID, "master")
+		PlaySound(soundID, channel or "master")
 	end
 end
 
