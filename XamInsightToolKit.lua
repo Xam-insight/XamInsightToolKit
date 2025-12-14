@@ -41,18 +41,62 @@ function XITK.GetMouseFocus()
 end
 
 ---------------------------------------------------------------------------------------------------
--- Names functions                                                                               --
+-- Addons functions                                                                              --
+---------------------------------------------------------------------------------------------------
+
+-- Returns the "main version" number or 0 on invalid input.
+function XITK.getMainVersion(version)
+    -- Validate the input first
+    if type(version) ~= "string" or version == "" then
+        return 0
+    end
+
+    -- Extract components safely
+    local v1, v2, v3 = strsplit(".", version)
+
+    -- Convert string parts to numbers
+    local n1 = tonumber(v1)
+    local n2 = tonumber(v2)
+
+    -- If any required part is missing or not numeric, return 0
+    if not n1 or not n2 then
+        return 0
+    end
+
+    -- Compute the main version safely
+    -- Note: multiply by 100 assuming format: major * 100 + minor
+    return n1 * 100 + n2
+end
+
+function XITK.Error(addon, message)
+	if addon and message then
+		local messageToPrint = "Dead Pool"..L["SPACE_BEFORE_DOT"]..": "..message
+		UIErrorsFrame:AddMessage(messageToPrint, 1.0, 0.1, 0.1)
+		addon:Print("|cFFFF0000"..messageToPrint)
+	end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Players and names functions                                                                   --
 ---------------------------------------------------------------------------------------------------
 
 -- Tip by Gello - Hyjal
 -- takes an npcID and returns the name of the npc
+if (not XamInsightToolKitTooltip) then
+	CreateFrame("GameTooltip", "XamInsightToolKitTooltip", UIParent, "GameTooltipTemplate")
+	XamInsightToolKitTooltip:SetFrameStrata("TOOLTIP")
+	XamInsightToolKitTooltip:Hide()
+else
+	return
+end
+
 function XITK.GetNameFromNpcID(npcID)
 	local name = ""
 	
-	EZBlizzardUiPopupsTooltip:SetOwner(UIParent, "ANCHOR_NONE")
-	EZBlizzardUiPopupsTooltip:SetHyperlink(format("unit:Creature-0-0-0-0-%d-0000000000", npcID))
+	XamInsightToolKitTooltip:SetOwner(UIParent, "ANCHOR_NONE")
+	XamInsightToolKitTooltip:SetHyperlink(format("unit:Creature-0-0-0-0-%d-0000000000", npcID))
 	
-	local line = _G[("EZBlizzardUiPopupsTooltipTextLeft%d"):format(1)]
+	local line = _G[("XamInsightToolKitTooltipTextLeft%d"):format(1)]
 	if line and line:GetText() then
 		name = line:GetText()
 	end
@@ -110,11 +154,15 @@ function XITK.playerCharacter()
 	return playerCharacter
 end
 
+function XITK.isPartyMember(unit)
+	return unit == "player" or UnitInParty(unit) or UnitInRaid(unit)
+end
+
 ---------------------------------------------------------------------------------------------------
--- String, date and table functions                                                              --
+-- String, number, date and table functions                                                              --
 ---------------------------------------------------------------------------------------------------
 
-local function XITK.upperCaseBusiness(aText)
+local function upperCaseBusiness(aText)
 	return string.utf8upper(aText)
 end
 
@@ -123,7 +171,7 @@ function XITK.titleFormat(aText)
 	local newText = ""
 	if aText then
 		newText = strtrim(aText):gsub("%s+", " ")
-		retOK, ret = pcall(XITK.upperCaseBusiness, string.utf8sub(newText, 1 , 1))
+		retOK, ret = pcall(upperCaseBusiness, string.utf8sub(newText, 1 , 1))
 		if retOK then
 			newText = ret..string.utf8sub(newText, 2)
 		end
@@ -136,7 +184,7 @@ function XITK.upperCase(aText)
 	local retOK, ret
 	local newText = ""
 	if aText then
-		retOK, ret = pcall(XITK.upperCaseBusiness, aText)
+		retOK, ret = pcall(upperCaseBusiness, aText)
 		if retOK then
 			newText = ret
 		else
@@ -170,20 +218,32 @@ function XITK.countTableElements(table)
 	return count
 end
 
+function XITK.tonumberzeroonblankornil(aString)
+	if aString and aString ~= "" then
+		return tonumber(aString)
+	else
+		return 0
+	end
+end
+
+function XITK.SimpleRound(val, valStep)
+	return floor(val/valStep)*valStep
+end
+
 ---------------------------------------------------------------------------------------------------
 -- Sound handling functions                                                                      --
 ---------------------------------------------------------------------------------------------------
 
 local willPlay, soundHandle
 
-function XITK.PlaySound(soundID, channel)
-	if soundID then
+function XITK.PlaySound(soundID, channel, soundDisabled)
+	if soundID and not soundDisabled then
 		PlaySound(soundID, channel or "master")
 	end
 end
 
-function XITK.PlaySoundFile(addon, soundFile, channel)
-	if addon and soundFile then
+function XITK.PlaySoundFile(addon, soundFile, channel, soundDisabled)
+	if addon and soundFile and not soundDisabled then
 		if soundHandle then
 			StopSound(soundHandle)
 		end
