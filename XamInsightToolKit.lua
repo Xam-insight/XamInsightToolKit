@@ -5,6 +5,30 @@ if not XITK then
     return
 end
 
+---------------------------------------------------------------------------------------------------
+-- WoW Client version workarounds                                                                --
+---------------------------------------------------------------------------------------------------
+
+-- Determine WoW TOC Version
+XITK.WoWClassicEra, XITK.WoWClassicTBC, XITK.WoWWOTLKC, XITK.WoWRetail = false
+local wowversion = select(4, GetBuildInfo())
+if wowversion < 20000 then
+	XITK.WoWClassicEra = true
+elseif wowversion < 30000 then 
+	XITK.WoWClassicTBC = true
+elseif wowversion < 40000 then 
+	XITK.WoWWOTLKC = true
+elseif wowversion < 50000 then 
+	XITK.WoWCATA = true
+elseif wowversion < 60000 then 
+	XITK.WoWMISTS = true
+elseif wowversion > 90000 then
+	XITK.WoWRetail = true
+
+else
+	-- n/a
+end
+
 function XITK.GetMouseFocus()
 	local frame = nil
 	if GetMouseFoci then
@@ -15,6 +39,10 @@ function XITK.GetMouseFocus()
 	end
 	return frame
 end
+
+---------------------------------------------------------------------------------------------------
+-- Names functions                                                                               --
+---------------------------------------------------------------------------------------------------
 
 -- Tip by Gello - Hyjal
 -- takes an npcID and returns the name of the npc
@@ -82,6 +110,42 @@ function XITK.playerCharacter()
 	return playerCharacter
 end
 
+---------------------------------------------------------------------------------------------------
+-- String, date and table functions                                                              --
+---------------------------------------------------------------------------------------------------
+
+local function XITK.upperCaseBusiness(aText)
+	return string.utf8upper(aText)
+end
+
+function XITK.titleFormat(aText)
+	local retOK, ret
+	local newText = ""
+	if aText then
+		newText = strtrim(aText):gsub("%s+", " ")
+		retOK, ret = pcall(XITK.upperCaseBusiness, string.utf8sub(newText, 1 , 1))
+		if retOK then
+			newText = ret..string.utf8sub(newText, 2)
+		end
+	end
+	return newText
+end
+
+
+function XITK.upperCase(aText)
+	local retOK, ret
+	local newText = ""
+	if aText then
+		retOK, ret = pcall(XITK.upperCaseBusiness, aText)
+		if retOK then
+			newText = ret
+		else
+			newText = aText
+		end
+	end
+	return newText
+end
+
 -- Converts a date into a timestamp (number of seconds since epoch)
 function XITK.dateToTimestamp(day, month, year)
     return time({year = year, month = month, day = day, hour = 0, min = 0, sec = 0})
@@ -106,7 +170,10 @@ function XITK.countTableElements(table)
 	return count
 end
 
--- Sound handling
+---------------------------------------------------------------------------------------------------
+-- Sound handling functions                                                                      --
+---------------------------------------------------------------------------------------------------
+
 local willPlay, soundHandle
 
 function XITK.PlaySound(soundID, channel)
