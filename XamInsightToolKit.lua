@@ -72,7 +72,7 @@ function XITK.Error(addon, addonName, message)
 	if addon and message then
 		local messageToPrint = string.format("%s"..XITK.GetPunctuationSpace()..": %s", addonName or "XITK", message)
 		UIErrorsFrame:AddMessage(messageToPrint, 1.0, 0.1, 0.1)
-		addon:Print("|cFFFF0000"..messageToPrint)
+		addon:Print("|cFFFF0000"..message)
 	end
 end
 
@@ -136,6 +136,8 @@ function XITK.fullName(unit)
 			end
 			if playerRealm and playerRealm ~= "" then
 				fullName = playerName.."-"..playerRealm
+			else
+				fullName = nil -- prevents too early usage of the function
 			end
 		end
 	end
