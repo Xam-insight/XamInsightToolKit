@@ -68,9 +68,9 @@ function XITK.getMainVersion(version)
     return n1 * 100 + n2
 end
 
-function XITK.Error(addon, message)
+function XITK.Error(addon, addonName, message)
 	if addon and message then
-		local messageToPrint = "Dead Pool"..L["SPACE_BEFORE_DOT"]..": "..message
+		local messageToPrint = string.format("%s"..XITK.GetPunctuationSpace()..": %s", addonName or "XITK", message)
 		UIErrorsFrame:AddMessage(messageToPrint, 1.0, 0.1, 0.1)
 		addon:Print("|cFFFF0000"..messageToPrint)
 	end
@@ -161,6 +161,14 @@ end
 ---------------------------------------------------------------------------------------------------
 -- String, number, date and table functions                                                              --
 ---------------------------------------------------------------------------------------------------
+
+local LOCALES_WITH_PUNCT_SPACE = {
+    frFR = true,
+}
+
+function XITK.GetPunctuationSpace()
+    return LOCALES_WITH_PUNCT_SPACE[GetLocale()] and " " or ""
+end
 
 local function upperCaseBusiness(aText)
 	return string.utf8upper(aText)
