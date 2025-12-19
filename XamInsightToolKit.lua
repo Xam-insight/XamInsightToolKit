@@ -115,7 +115,7 @@ end
 
 
 function XITK.addRealm(aName, aRealm)
-	if aName and not issecretvalue(aName) and not string.match(aName, "-") then
+	if aName and (not issecretvalue or not issecretvalue(aName)) and not string.match(aName, "-") then
 		if aRealm and aRealm ~= "" then
 			aName = aName.."-"..aRealm
 		else
@@ -127,7 +127,7 @@ function XITK.addRealm(aName, aRealm)
 end
 
 function XITK.delRealm(aName)
-	if aName and not issecretvalue(aName) and string.match(aName, "-") then
+	if aName and (not issecretvalue or not issecretvalue(aName)) and string.match(aName, "-") then
 		aName = strsplit("-", aName)
 	end
 	return aName
