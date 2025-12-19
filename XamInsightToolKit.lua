@@ -104,8 +104,18 @@ function XITK.GetNameFromNpcID(npcID)
 	return name
 end
 
+function XITK.IsPlayerUnitSafe(unit)
+    local ok, isPlayer = pcall(UnitIsPlayer, unit)
+    if ok then
+        return isPlayer
+	else
+		return false
+    end
+end
+
+
 function XITK.addRealm(aName, aRealm)
-	if aName and not string.match(aName, "-") then
+	if aName and not issecretvalue(aName) and not string.match(aName, "-") then
 		if aRealm and aRealm ~= "" then
 			aName = aName.."-"..aRealm
 		else
@@ -117,7 +127,7 @@ function XITK.addRealm(aName, aRealm)
 end
 
 function XITK.delRealm(aName)
-	if aName and string.match(aName, "-") then
+	if aName and not issecretvalue(aName) and string.match(aName, "-") then
 		aName = strsplit("-", aName)
 	end
 	return aName
@@ -127,7 +137,7 @@ function XITK.fullName(unit)
 	local fullName = nil
 	if unit then
 		local playerName, playerRealm = UnitNameUnmodified(unit)
-		if not UnitIsPlayer(unit) then
+		if not XITK.IsPlayerUnitSafe(unit) then
 			return playerName
 		end
 		if playerName and playerName ~= "" and playerName ~= UNKNOWN then
@@ -252,14 +262,14 @@ function XITK.PlaySound(soundID, channel, soundDisabled)
 	end
 end
 
-function XITK.PlaySoundFile(addon, soundFile, channel, soundDisabled)
-	if addon and soundFile and not soundDisabled then
+function XITK.PlaySoundFile(addonFolder, soundFile, channel, soundDisabled)
+	if addonFolder and soundFile and not soundDisabled then
 		if soundHandle then
 			StopSound(soundHandle)
 		end
-		willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..addon.."\\sound\\"..soundFile.."_"..GetLocale()..".ogg", channel, _, true)
+		willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..addonFolder.."\\sound\\"..soundFile.."_"..GetLocale()..".ogg", channel, _, true)
 		if not willPlay then
-			willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..addon.."\\sound\\"..soundFile..".ogg", channel, _, true)
+			willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..addonFolder.."\\sound\\"..soundFile..".ogg", channel, _, true)
 		end
 	end
 	return soundHandle
