@@ -267,9 +267,9 @@ function XITK.PlaySoundFile(addonFolder, soundFile, channel, soundDisabled)
 		if soundHandle then
 			StopSound(soundHandle)
 		end
-		willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..addonFolder.."\\sound\\"..soundFile.."_"..GetLocale()..".ogg", channel, _, true)
+		willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..addonFolder.."\\sound\\"..soundFile.."_"..GetLocale()..".ogg", channel)
 		if not willPlay then
-			willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..addonFolder.."\\sound\\"..soundFile..".ogg", channel, _, true)
+			willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..addonFolder.."\\sound\\"..soundFile..".ogg", channel)
 		end
 	end
 	return soundHandle
