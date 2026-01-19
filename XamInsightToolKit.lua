@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "XamInsightToolKit", 1
+local MAJOR, MINOR = "XamInsightToolKit", 2
 local XITK = LibStub:NewLibrary(MAJOR, MINOR)
 if not XITK then
     -- A newer version is already loaded
@@ -225,7 +225,7 @@ function XITK.getCurrentDate()
 end
 
 function XITK.getTimeUTCinMS()
-	return tostring(time(date("!*t")))
+	return time(date("!*t"))
 end
 
 function XITK.countTableElements(table)
