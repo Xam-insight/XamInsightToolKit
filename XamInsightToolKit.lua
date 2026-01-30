@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "XamInsightToolKit", 2
+local MAJOR, MINOR = "XamInsightToolKit", 3
 local XITK = LibStub:NewLibrary(MAJOR, MINOR)
 if not XITK then
     -- A newer version is already loaded
@@ -140,7 +140,7 @@ function XITK.fullName(unit)
 		if not XITK.IsPlayerUnitSafe(unit) then
 			return playerName
 		end
-		if playerName and playerName ~= "" and playerName ~= UNKNOWN then
+		if playerName and (not issecretvalue or not issecretvalue(playerName)) and playerName ~= "" and playerName ~= UNKNOWN then
 			if not playerRealm or playerRealm == "" then
 				playerRealm = GetNormalizedRealmName()
 			end
