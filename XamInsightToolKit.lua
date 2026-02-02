@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "XamInsightToolKit-2.0", 1
+local MAJOR, MINOR = "XamInsightToolKit-2.0", 2
 local XITK = LibStub:NewLibrary(MAJOR, MINOR)
 if not XITK then
     -- A newer version is already loaded
@@ -82,12 +82,10 @@ end
 
 -- Tip by Gello - Hyjal
 -- takes an npcID and returns the name of the npc
-if (not XamInsightToolKitTooltip) then
+if not XamInsightToolKitTooltip then
 	CreateFrame("GameTooltip", "XamInsightToolKitTooltip", UIParent, "GameTooltipTemplate")
 	XamInsightToolKitTooltip:SetFrameStrata("TOOLTIP")
 	XamInsightToolKitTooltip:Hide()
-else
-	return
 end
 
 function XITK:GetNameFromNpcID(npcID)
