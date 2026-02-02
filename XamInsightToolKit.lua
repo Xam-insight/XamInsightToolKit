@@ -295,3 +295,9 @@ function XITK.PlayRandomSound(soundFileIDBank, channel, playSound)
 	end
 	return nil
 end
+
+function XITK.DoEmote(emote)
+	if not UnitAffectingCombat("player") then
+		DoEmote(emote)
+	end
+end
