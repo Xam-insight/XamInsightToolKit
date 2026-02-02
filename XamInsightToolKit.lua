@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "XamInsightToolKit", 3
+local MAJOR, MINOR = "XamInsightToolKit", 4
 local XITK = LibStub:NewLibrary(MAJOR, MINOR)
 if not XITK then
     -- A newer version is already loaded
