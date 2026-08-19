@@ -1,2 +1,4 @@
+- v2.0.0
+	- New functions.
 - v1.0.0
 	- Init.
