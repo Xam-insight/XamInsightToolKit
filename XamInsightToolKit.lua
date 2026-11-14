@@ -28,27 +28,6 @@ XITK.isProgressionClassic = isCataclysmClassic or isMistsClassic
 XITK.isClassicForever = projectID == PROJECT_FOREVER
 XITK.isAnyClassic = isClassicEra or isAnniversaryTBC or isProgressionClassic
 
----[[ Deprecated --
-	XITK.WoWClassicEra, XITK.WoWClassicTBC, XITK.WoWWOTLKC, XITK.WoWRetail = false
-	local wowversion = select(4, GetBuildInfo())
-	if wowversion < 20000 then
-		XITK.WoWClassicEra = true
-	elseif wowversion < 30000 then 
-		XITK.WoWClassicTBC = true
-	elseif wowversion < 40000 then 
-		XITK.WoWWOTLKC = true
-	elseif wowversion < 50000 then 
-		XITK.WoWCATA = true
-	elseif wowversion < 60000 then 
-		XITK.WoWMISTS = true
-	elseif wowversion > 90000 then
-		XITK.WoWRetail = true
-
-	else
-		-- n/a
-	end
---]]
-
 function XITK:GetMouseFocus()
 	local frame = nil
 	if GetMouseFoci then
