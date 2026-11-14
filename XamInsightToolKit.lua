@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "XamInsightToolKit-2.0", 3
+local MAJOR, MINOR = "XamInsightToolKit-2.0", 4
 local XITK = LibStub:NewLibrary(MAJOR, MINOR)
 if not XITK then
     -- A newer version is already loaded
@@ -9,25 +9,45 @@ end
 -- WoW Client version workarounds                                                                --
 ---------------------------------------------------------------------------------------------------
 
--- Determine WoW TOC Version
-XITK.WoWClassicEra, XITK.WoWClassicTBC, XITK.WoWWOTLKC, XITK.WoWRetail = false
-local wowversion = select(4, GetBuildInfo())
-if wowversion < 20000 then
-	XITK.WoWClassicEra = true
-elseif wowversion < 30000 then 
-	XITK.WoWClassicTBC = true
-elseif wowversion < 40000 then 
-	XITK.WoWWOTLKC = true
-elseif wowversion < 50000 then 
-	XITK.WoWCATA = true
-elseif wowversion < 60000 then 
-	XITK.WoWMISTS = true
-elseif wowversion > 90000 then
-	XITK.WoWRetail = true
+-- Determine WoW TOC Version (Code from arithmandar for LibUIDropDownMenu)
+local projectID = WOW_PROJECT_ID
 
-else
-	-- n/a
-end
+local PROJECT_MAINLINE = WOW_PROJECT_MAINLINE
+local PROJECT_CLASSIC = WOW_PROJECT_CLASSIC
+local PROJECT_TBC = WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+local PROJECT_CATA = WOW_PROJECT_CATACLYSM_CLASSIC
+local PROJECT_MISTS = WOW_PROJECT_MISTS_CLASSIC
+local PROJECT_FOREVER = WOW_PROJECT_CAMELOT
+
+XITK.isRetail = projectID == PROJECT_MAINLINE
+XITK.isClassicEra = projectID == PROJECT_CLASSIC
+XITK.isAnniversaryTBC = PROJECT_TBC ~= nil and projectID == PROJECT_TBC
+XITK.isCataclysmClassic = PROJECT_CATA ~= nil and projectID == PROJECT_CATA
+XITK.isMistsClassic = PROJECT_MISTS ~= nil and projectID == PROJECT_MISTS
+XITK.isProgressionClassic = isCataclysmClassic or isMistsClassic
+XITK.isClassicForever = projectID == PROJECT_FOREVER
+XITK.isAnyClassic = isClassicEra or isAnniversaryTBC or isProgressionClassic
+
+---[[ Deprecated --
+	XITK.WoWClassicEra, XITK.WoWClassicTBC, XITK.WoWWOTLKC, XITK.WoWRetail = false
+	local wowversion = select(4, GetBuildInfo())
+	if wowversion < 20000 then
+		XITK.WoWClassicEra = true
+	elseif wowversion < 30000 then 
+		XITK.WoWClassicTBC = true
+	elseif wowversion < 40000 then 
+		XITK.WoWWOTLKC = true
+	elseif wowversion < 50000 then 
+		XITK.WoWCATA = true
+	elseif wowversion < 60000 then 
+		XITK.WoWMISTS = true
+	elseif wowversion > 90000 then
+		XITK.WoWRetail = true
+
+	else
+		-- n/a
+	end
+--]]
 
 function XITK:GetMouseFocus()
 	local frame = nil
